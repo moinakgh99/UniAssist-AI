@@ -1,0 +1,7 @@
+user_query,intent,expected_subcategory,should_escalate,pred_intent,clf_only_intent,confidence,fused,retrieval_score,sentiment,pred_escalate,reason,top3_sub
+"i got rejected, how to appeal this",admissions,appeals,0,academics,academics,0.416,0.405,0.398,-0.25,0,,"['grades', 'appeals', 'appeals']"
+where can i see how many credits are left to graduate,advising,degree_progress,0,advising,advising,0.695,0.512,0.39,0.361,0,,"['graduation', 'degree_progress', 'overrides']"
+how do i apply to graduate this year,advising,graduation,0,admissions,financial_aid,0.112,0.305,0.434,0.0,1,low_confidence,"['application', 'graduation', 'applications']"
+this is useless i have been waiting for 3 weeks and nobody helps me,academics,,1,campus_life,campus_life,0.184,0.109,0.06,-0.572,1,negative_sentiment,"['dining', 'transport', 'leave']"
+get me a human agent now,admissions,,1,health_services,health_services,0.269,0.137,0.048,0.0,1,user_requested,"['certificates', 'records', 'emergency']"
+your bot is terrible and this is a joke,academics,,1,campus_life,campus_life,0.331,0.166,0.056,-0.681,1,negative_sentiment,"['dining', 'transport', 'clubs']"

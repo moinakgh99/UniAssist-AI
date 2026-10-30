@@ -1,0 +1,7 @@
+# Keeps Streamlit's own widgets on the light base theme; UniAssist AI switches light/dark itself
+# (Dark mode toggle in the sidebar) via assets/styles.css.
+[theme]
+base = "light"
+
+[browser]
+gatherUsageStats = false

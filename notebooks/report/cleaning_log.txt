@@ -1,0 +1,17 @@
+Rows loaded: 5546
+Missing values per column (raw):
+session_id             0
+user_query             0
+intent                 0
+confidence_score       0
+bot_response           0
+escalated              0
+rating              5546
+Dropped 0 rows with empty user_query
+Dropped 0 exact duplicate rows
+Rows with unrecognised escalated value (set to missing): 0
+confidence_score: rescaled 0 values from 0-100 to 0-1; 0 non-numeric
+rating: 0 values outside 1-5 set to missing; 5546 missing (unrated)
+PII masked in user_query: 0 rows
+PII masked in bot_response: 0 rows
+Final rows: 5546

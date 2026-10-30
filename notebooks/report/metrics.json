@@ -1,0 +1,15 @@
+{
+  "n_test_queries": 75,
+  "n_in_scope": 61,
+  "intent_accuracy_fused": 0.967,
+  "intent_macro_f1_fused": 0.971,
+  "intent_accuracy_classifier_only": 0.951,
+  "retrieval_top1": 0.951,
+  "retrieval_top3": 1.0,
+  "escalation_precision": 0.923,
+  "escalation_recall": 1.0,
+  "escalation_f1": 0.96,
+  "crisis_queries_escalated": "2/2",
+  "latency_ms_median": 2.84,
+  "latency_ms_p95": 3.07
+}

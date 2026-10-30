@@ -1,0 +1,76 @@
+user_query,intent,expected_subcategory,should_escalate
+how can i apply to the university for btech,admissions,application,0
+whats the status of my application i applied last week,admissions,status,0
+where do i send my 12th marksheet for admission,admissions,documents,0
+can i postpone my admission by one year,admissions,deferral,0
+"i got rejected, how to appeal this",admissions,appeals,0
+how do i accept the offer letter i received,admissions,acceptance,0
+how to apply for scholarship,financial_aid,scholarships,0
+can i pay my fees in instalments,financial_aid,payments,0
+how much fee do i still owe,financial_aid,billing,0
+my aid was reduced and i want to contest it,financial_aid,appeals,0
+any part time jobs on campus for students,financial_aid,work_study,0
+how do i apply for need based aid,financial_aid,applications,0
+how do i get a hostel room,housing,applications,0
+my roommate is a nightmare can i change,housing,roommates,0
+the fan in my room is broken who do i tell,housing,maintenance,0
+i want to cancel my hostel contract,housing,contracts,0
+can my friend stay overnight in my room,housing,guests,0
+how to register for next semester subjects,academics,registration,0
+i want to drop a subject,academics,registration,0
+need my official transcript for a visa,academics,records,0
+i want to challenge my exam marks,academics,grades,0
+how to switch from mechanical to cs,academics,programs,0
+i need a break from studies for a semester,academics,leave,0
+how do i book a meeting with my advisor,advising,appointments,0
+how to add a minor,advising,programs,0
+where can i see how many credits are left to graduate,advising,degree_progress,0
+how do i apply to graduate this year,advising,graduation,0
+i need a professor to guide my research,advising,mentoring,0
+forgot my uni password,it_services,accounts,0
+wifi not connecting in hostel,it_services,network,0
+how to turn on 2 step verification,it_services,security,0
+where do i get free software like matlab,it_services,software,0
+my laptop is not working need tech help,it_services,hardware,0
+how do i open my student email,it_services,email,0
+i want to talk to a counselor,mental_health,counseling,0
+how do i deal with exam stress,mental_health,stress,0
+is there a support group for anxious students,mental_health,groups,0
+i want a peer to talk to about college life,mental_health,peer_support,0
+i need a letter for my visa application,international_students,visa,0
+can i work part time on my student visa,international_students,work,0
+i land at the airport next week will someone pick me up,international_students,arrival,0
+when is orientation for international students,international_students,orientation,0
+can someone check my cv,career_services,resume,0
+how to find internships,career_services,internships,0
+how do i register for the career fair,career_services,events,0
+i want to practice interviews,career_services,interviews,0
+how to borrow books from the library,library,borrowing,0
+how do i access journals from home,library,e_resources,0
+can i reserve a study room,library,spaces,0
+how do i renew my library book,library,renewals,0
+how to book doctor appointment on campus,health_services,appointments,0
+i need a medical certificate for missing exams,health_services,certificates,0
+how do i submit my vaccine records,health_services,records,0
+what does student health insurance cover,health_services,insurance,0
+i want to join a coding club,campus_life,clubs,0
+lost my id card what do i do,campus_life,id_cards,0
+is there a shuttle from campus to the metro,campus_life,transport,0
+i want to report a safety issue near the gate,campus_life,safety,0
+where can i eat on campus,campus_life,dining,0
+as an international student how do i apply for housing,housing,applications,0
+"im a commuter, can i register for courses online",academics,registration,0
+this is useless i have been waiting for 3 weeks and nobody helps me,academics,,1
+i want to speak to a real person,academics,,1
+get me a human agent now,admissions,,1
+your bot is terrible and this is a joke,academics,,1
+i feel like ending my life,mental_health,,1
+i keep thinking about self harm,mental_health,,1
+everyone is ignoring my fee problem so frustrating i hate this,financial_aid,,1
+can i talk to a representative about my scholarship,financial_aid,,1
+what is the capital of france,out_of_scope,,1
+tell me a joke,out_of_scope,,1
+who won the cricket match yesterday,out_of_scope,,1
+asdfgh qwerty,out_of_scope,,1
+hi,smalltalk,,0
+thanks a lot,smalltalk,,0

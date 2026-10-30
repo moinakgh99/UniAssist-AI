@@ -1,0 +1,12 @@
+pandas
+scikit-learn
+nltk
+vaderSentiment
+streamlit>=1.40
+matplotlib
+seaborn
+joblib
+ipykernel
+transformers
+sentence-transformers
+torch

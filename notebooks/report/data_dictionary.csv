@@ -1,0 +1,10 @@
+column,data_type,description,allowed_values_or_range,example,missing_count
+session_id,string,Identifier of the chat session (several turns can share one session).,any unique text,5e93e59778ae,0
+user_query,string,"Student's message, PII masked.",free text,How do I apply for undergraduate admission?,0
+intent,string (categorical),Intent label assigned to the query.,lower_snake_case category names,admissions,0
+confidence_score,float,Model confidence for the predicted intent.,0.0 - 1.0,1.0,0
+bot_response,string,Text the bot replied with.,free text,"To apply for undergraduate admission: first, create an applicant account; second",0
+escalated,string (categorical),Whether the chat was handed to a human agent.,Y / N,N,0
+rating,integer (nullable),Student satisfaction rating; empty if not rated.,1 - 5,,5546
+query_length,integer,Derived: number of characters in user_query.,>= 1,43,0
+word_count,integer,Derived: number of words in user_query.,>= 1,7,0
