@@ -21,7 +21,7 @@ Answers questions from a real FAQ knowledge base, masks personal data, and hands
 [![Language](https://img.shields.io/badge/language-English-6B7280?style=flat-square)](#-known-limitations)
 [![Status](https://img.shields.io/badge/status-academic%20project-8B5CF6?style=flat-square)](#-known-limitations)
 
-[**Quick start**](#-quick-start) · [**The app**](#-the-app) · [**How it works**](#-how-it-works) · [**Testing**](#-testing) · [**Technical docs**](chatbot/README.md)
+[**Quick start**](#-quick-start) · [**The app**](https://uniassist-ai.streamlit.app/) · [**How it works**](#-how-it-works) · [**Testing**](#-testing) · [**Technical docs**](chatbot/README.md)
 
 </div>
 
