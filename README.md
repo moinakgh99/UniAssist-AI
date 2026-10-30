@@ -1,107 +1,140 @@
-# UniAssist AI - University Student Support Chatbot
-HCLTech Career Shaper - Project 30. Python, Streamlit, sentence-transformers, Hugging Face zero-shot classification,
-NLTK/VADER, scikit-learn, SQLite.
+<div align="center">
 
-## What it is
-A Streamlit app where students ask questions about admissions, fees, housing, courses, IT, library, wellbeing and
-more. The assistant answers from an FAQ knowledge base (`data/faq_dataset.csv`), masks personal data, and hands the
-conversation to a human agent when it detects a crisis, a request for a human, frustration, or low confidence.
+# 🎓 UniAssist AI
 
-### App pages
-| Page | What it does |
+### A privacy-first AI assistant for university student support
+
+Answers questions from a real FAQ knowledge base, masks personal data, and hands students to a human when it matters.
+
+<br>
+
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-%E2%89%A51.40-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Hugging Face](https://img.shields.io/badge/Hugging%20Face-Transformers-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black)](https://huggingface.co/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
+[![SQLite](https://img.shields.io/badge/SQLite-Storage-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+
+[![Tests](https://img.shields.io/badge/tests-65%20passing-2EA44F?style=flat-square&logo=checkmarx&logoColor=white)](#-testing)
+[![Privacy](https://img.shields.io/badge/privacy-PII%20masking%20%2B%20opt--out-0B6E8A?style=flat-square&logo=letsencrypt&logoColor=white)](#-privacy--safety)
+[![Human hand-off](https://img.shields.io/badge/escalation-human%20hand--off-B7791F?style=flat-square&logo=helpscout&logoColor=white)](#-how-it-works)
+[![Theme](https://img.shields.io/badge/theme-light%20%7C%20dark-111827?style=flat-square&logo=materialdesign&logoColor=white)](#-the-app)
+[![Language](https://img.shields.io/badge/language-English-6B7280?style=flat-square)](#-known-limitations)
+[![Status](https://img.shields.io/badge/status-academic%20project-8B5CF6?style=flat-square)](#-known-limitations)
+
+[**Quick start**](#-quick-start) · [**The app**](#-the-app) · [**How it works**](#-how-it-works) · [**Testing**](#-testing) · [**Technical docs**](chatbot/README.md)
+
+</div>
+
+---
+
+## ✨ Highlights
+
+| | |
 |---|---|
-| Dashboard | Greeting, session numbers, most-asked topics (aggregated from saved chats), quick starts |
-| AI Assistant | Chat with message bubbles, quick prompt library, suggested follow-ups, rate / copy replies, local export |
-| FAQ Library | Browse the FAQ by category, search, ask the assistant about any entry, copy answers |
-| Agent Support | Table of escalated conversations from the database (masked text), reason filter, CSV download |
-| Privacy & Settings | What is stored, opt-out status, clear / new session / delete saved data, masking demo, appearance |
-| Feedback | Rate this session's answers (stored with `db.rate`) and see the overall average rating |
+| 💬 **Conversational assistant** | Message bubbles, quick prompt library, suggested follow-ups, copy and rate every reply |
+| 📚 **FAQ Library** | Browse every answer by category, search, or ask the assistant about any entry |
+| 🧠 **Hybrid NLP** | Zero-shot intent classification fused with sentence-embedding FAQ retrieval |
+| 🛡️ **Privacy by design** | Emails, phone and ID numbers masked before saving, one-click opt-out, delete-my-data |
+| 🚨 **Safe escalation** | Crisis wording, requests for a human, frustration and low confidence all route to staff |
+| 🧑‍💼 **Agent Support** | Live table of escalated chats from the database, with reason filters and CSV download |
+| 🎨 **Polished UI** | Light and dark themes, comfortable or compact layout, responsive, empty states throughout |
 
-Frontend-only extras: light/dark mode, comfortable/compact chat layout, chat export (.txt / .md / .json, generated in
-the browser download, never uploaded), copy buttons, empty states. None of them add database tables or APIs.
+## 🖥️ The app
 
-## How the NLP works
-```
-message -> PII scrub -> crisis / small-talk checks
-        -> zero-shot intent classifier (facebook/bart-large-mnli)          \  fused score decides
-        -> FAQ retrieval (all-MiniLM-L6-v2 sentence embeddings, cosine)    /  the intent and FAQ topic
-        -> sentiment (VADER) + escalation rules -> answer  OR  hand-off to a human agent
-        -> log scrubbed text to SQLite (skipped if the student opted out)
-```
-* Escalation reasons: `crisis`, `user_requested`, `negative_sentiment`, `low_confidence`.
-* `models/intent.joblib` (TF-IDF + Logistic Regression, created by `src/train.py`) is still loaded at start-up, but
-  **only its list of intent labels is used**; the probabilities come from the zero-shot model.
-* The first start downloads the two Hugging Face models (BART-large-MNLI is roughly 1.6 GB), so it needs internet
-  once and can take several minutes. Later starts use the local cache.
-* Optional experimental mode (Privacy & Settings > Experimental): answers generated by `google/flan-t5-small`
-  (`model.py`, loaded only when first used). These answers are not logged, rated or escalated; crisis and
-  human-request messages always use the standard path.
+| Page | Purpose |
+|---|---|
+| **Dashboard** | Greeting, session numbers, most-asked topics, one-click quick starts |
+| **AI Assistant** | The chat: typing indicator, escalation banner, rate / copy, local export (.txt, .md, .json) |
+| **FAQ Library** | Category navigation, search, copy answers |
+| **Agent Support** | Escalated conversations (masked text only) |
+| **Privacy & Settings** | What is stored, session controls, live masking demo, appearance |
+| **Feedback** | Rate this session's answers and see the overall average |
 
-## Project layout
-```
-src/app.py            Streamlit entry point (all backend calls live here)
-src/ui_components.py  Reusable UI components (no database / NLP calls)
-src/ui_data.py        Pure helpers: FAQ browsing, prompt library, HTML escaping, exports
-src/nlp.py            PII scrub, retrieval, intent, sentiment, escalation (the Bot)
-src/db.py             SQLite storage (data/chatbot.db)
-src/train.py, evaluate.py, clean_and_eda.py, generate_dataset_from_faq.py   data / model scripts
-frontend/app.py       Alternative launcher; runs src/app.py (single UI implementation)
-model.py              Optional FLAN-T5 helper (lazy)
-assets/styles.css     Design system (light + dark themes)
-tests/                Regression tests (unittest)
-.streamlit/config.toml  Keeps Streamlit's native widgets on the light base theme
+## 🔬 How it works
+
+```mermaid
+flowchart LR
+    A[Student message] --> B[PII scrub]
+    B --> C{Crisis or<br/>small talk?}
+    C -- crisis --> H[Escalate to human]
+    C -- small talk --> R[Instant reply]
+    C -- no --> D[Zero-shot intent<br/>BART-large-MNLI]
+    C -- no --> E[FAQ retrieval<br/>MiniLM embeddings]
+    D --> F[Fused score]
+    E --> F
+    F --> G{Escalation rules<br/>human request, sentiment,<br/>confidence}
+    G -- escalate --> H
+    G -- answer --> R
+    R --> L[(SQLite log<br/>scrubbed text only)]
+    H --> L
 ```
 
-## Setup
-Developed against Python 3.12 (the bundled virtual environment used 3.12.6). From this `chatbot/` folder:
-```
+Escalation reasons: `crisis`, `user_requested`, `negative_sentiment`, `low_confidence`. Nothing is written to the database if the student opts out.
+
+## 🚀 Quick start
+
+```bash
+git clone <your-repo-url>
+cd ChatbotForUniversityStudent-main/chatbot
+
 python -m venv .venv
-.venv\Scripts\activate            # Windows   (Mac/Linux: source .venv/bin/activate)
+.venv\Scripts\activate            # macOS / Linux: source .venv/bin/activate
 pip install -r requirements.txt
-```
-`requirements.txt` needs `streamlit>=1.40` (the UI uses `st.toggle`, `st.popover` and Material icons).
 
-## Run
-Run commands **from the `chatbot/` folder** so `.streamlit/config.toml` is picked up.
-```
-streamlit run src/app.py          # the app
-streamlit run frontend/app.py     # same app, alternative entry point
+streamlit run src/app.py
 ```
 
-## Data and model scripts
-1. `python src/clean_and_eda.py` - cleans `data/dataset.csv` and **overwrites `data/dataset_clean.csv`**; writes
-   `report/` outputs (note: the pre-generated reports in this repo live in `notebooks/report/`).
-2. `python src/train.py` - trains the TF-IDF + LR classifier and **overwrites `models/intent.joblib`**.
-   Use `python src/train.py --output some/other/path.joblib` to train without touching the shipped model;
-   add `--use-chatlog` to include `data/dataset_clean.csv`.
-3. `python src/evaluate.py` - needs the real models (downloads them), writes `report/metrics.json`, `errors.csv`.
+> **First launch:** the two Hugging Face models are downloaded once (BART-large-MNLI is roughly 1.6 GB), so it needs internet and may take a few minutes. Run commands from the `chatbot/` folder so the Streamlit theme config is picked up. `streamlit run frontend/app.py` starts the same app.
 
-## Tests
-```
+## 🧪 Testing
+
+```bash
+cd chatbot
 python -m unittest discover -s tests -t .
 ```
-* `test_nlp.py`, `test_db.py`, `test_ui_data.py`, `test_train_and_model.py` run the project's real code. The
-  database is copied to a temp folder first; `models/intent.joblib` and `data/chatbot.db` are never modified.
-* The two downloadable neural models (BART, MiniLM) are replaced by small deterministic stand-ins in tests, so
-  the tests check the project's logic (PII masking, crisis / human / sentiment / low-confidence rules, retrieval
-  plumbing, database contracts), **not the accuracy of the real models**.
-* `test_app_flow.py` executes `src/app.py` against a fake `streamlit` module (`tests/fake_streamlit.py`) to check
-  page flow, backend calls, duplicate widget keys and HTML escaping. It does not render a real browser, so
-  look at the app once with `streamlit run src/app.py` after installing.
 
-## Before you submit - checklist
-- [ ] Edit `HELPDESK_CONTACT` and `CRISIS_RESOURCES` in `src/nlp.py` with real contacts (they are placeholders).
-- [ ] Write your own test queries in `data/test_queries.csv`; the 75 provided are a starter set tuned partly by hand.
-- [ ] Tune `FUSED_MIN`, `W_RETR`, `SENT_MIN` in `src/nlp.py` on one set of queries, then report on another.
-- [ ] The FAQ answers are generic template text; real use needs the university's own policies.
-- [ ] Keep the ethics features: PII scrubbing, opt-out, delete-my-data, visible escalation banner.
+65 tests cover PII masking, crisis / human / sentiment / low-confidence rules, retrieval, database contracts, the training pipeline, lazy model loading and the full page flow. Tests run on a temporary copy of the database and never touch `data/chatbot.db` or `models/intent.joblib`.
 
-## Known limitations
-- PII scrubbing is regex-based: it catches emails, phone numbers and long ID numbers, **not names or addresses**.
-- Crisis detection is a keyword list and can miss indirect wording; real deployment needs clinical review.
-- VADER is rule-based and English-only; a few domain words were added to its lexicon.
-- Intent training data is template-generated, so it is much cleaner than real student messages.
-- English only. No real agent system exists: Agent Support is a read-only demo view (escalation status cannot be
-  changed from the UI because `db.py` has no function for it).
-- Light/dark mode is applied with CSS, so Streamlit's own widgets keep their light styling in dark mode where the
-  stylesheet does not override them.
+> The two large neural models are replaced by small deterministic stand-ins in tests, so they verify the project's logic, **not the real models' accuracy**. The page-flow tests use a fake Streamlit module, so also open the app once in a browser.
+
+## 🔒 Privacy & safety
+
+- Chats are stored under a random session ID, never linked to a person.
+- Emails, phone numbers and long ID numbers are masked before anything is saved.
+- **Names and addresses are not detected**, so the UI asks students not to type them.
+- Opt-out stops all saving; escalations then point the student to the helpdesk directly.
+- Crisis detection is a keyword list and needs clinical review before real deployment.
+
+## 🗂️ Project structure
+
+```
+chatbot/
+├── src/
+│   ├── app.py              Streamlit entry point (all backend calls)
+│   ├── ui_components.py    Reusable UI components
+│   ├── ui_data.py          Pure helpers: FAQ browsing, exports, escaping
+│   ├── nlp.py              PII scrub, retrieval, intent, sentiment, escalation
+│   ├── db.py               SQLite storage
+│   └── train.py · evaluate.py · clean_and_eda.py
+├── frontend/app.py         Alternative launcher (runs src/app.py)
+├── assets/styles.css       Design system, light + dark
+├── data/ · models/ · notebooks/
+└── tests/                  Regression tests
+```
+
+## ⚠️ Known limitations
+
+- The FAQ answers are generic template text; real use needs your university's own policies.
+- `HELPDESK_CONTACT` and `CRISIS_RESOURCES` in `chatbot/src/nlp.py` are placeholders to fill in.
+- English only. Agent Support is a read-only demo view; escalation status can't be changed from the UI.
+- Intent training data is template-generated, so it is cleaner than real student messages.
+
+See [`chatbot/README.md`](chatbot/README.md) for scripts, tuning settings and the submission checklist.
+
+---
+
+<div align="center">
+
+Built for the **HCLTech Career Shaper** programme, Project 30
+
+</div>
